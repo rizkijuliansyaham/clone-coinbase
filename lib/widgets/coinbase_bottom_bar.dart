@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../util/theme.dart';
+import '../utils/theme.dart';
 
 class CoinbaseBottomBar extends StatefulWidget {
   final Function(int) selectedIndex;
