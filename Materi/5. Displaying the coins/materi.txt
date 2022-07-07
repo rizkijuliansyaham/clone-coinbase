@@ -1,0 +1,178 @@
+1. Let's go ahead and create a widget that will be responsible for displaying the coin data. Inside /widgets/ create a coin_display.dart file.
+
+2. Create a stateful widget inside called CoinDisplay
+
+      import 'package:flutter/material.dart';
+
+      class CoinDisplay extends StatefulWidget {
+        const CoinDisplay({Key? key}) : super(key: key);
+
+        @override
+        State<CoinDisplay> createState() => _CoinDisplayState();
+      }
+
+      class _CoinDisplayState extends State<CoinDisplay> {
+
+
+        @override
+        Widget build(BuildContext context) {
+          return Container();
+        }
+      }
+
+3. Inside the _CoinDisplayState let's define a late field called _getCoins that can represent the result of getting the coins. Let's initialize it inside initState. This flow is useful as it will basically act as a cache, saving the data and preventing it from sending a request every time the UI updates.
+      late Future<List<Coin>> _getCoins;
+
+        @override
+        void initState() {
+          _getCoins = CoinRepository.getCoins();
+          super.initState();
+        }
+      
+      
+4. Now, let's replace the Container() inside our build method with a FutureBuilder which will be responsible for getting the data:
+      @override
+        Widget build(BuildContext context) {
+          return FutureBuilder<List<Coin>>(
+                  future: _getCoins,
+                  builder: (context, snapshot) {
+                    //
+                  }
+              )
+          }
+
+5. Inside builder, let's check if the connection is done and we have data, otherwise we will display some text centered saying that it's loading.
+      builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data != null) {
+
+                }
+                // Loading state
+                return const Center(child: Text("Loading"));
+              });
+
+6. Inside the if statement we can get the coins that will be inside snapshot.data. Let's return a widget with some padding and a Column that will use the coins list to populate its children:
+      if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data != null) {
+                  final coins = snapshot.data ?? [];
+                  return Padding(
+                    padding:
+                        const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 40),
+                    child: Column(
+                      children:
+                    ),
+                  );
+                }
+
+7. For the Column children let's map each of our coins into a Text widget for now. Remember to convert the mapping to a list just like below:
+        Column(
+            children: coins.map((coin) => Text(coin.fullName)).toList(),
+          ),
+
+8. Awesome! Save it, hot restart and you should see a list of coins showing up in your screen like this:
+
+9. Beautiful, but not perfect. Go to widgets/coin_card.dart. Uncomment the code and save it.
+
+import 'package:flutter/material.dart';
+import '../model/coin.dart';
+
+class CoinCard extends StatelessWidget {
+  final Coin coin;
+  const CoinCard({required this.coin, Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 25.0),
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        child: Row(
+          children: [
+            Image.network(coin.imageUrl, width: 35),
+            const SizedBox(
+              width: 15,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  coin.fullName,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 16),
+                ),
+                Text(
+                  coin.ticker,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w300, fontSize: 14),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Text(
+              "\$" + coin.price.toStringAsFixed(2),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+10. Go back to coin_display.dart and let's replace the Text with the CoinCard widget wrapped in a GestureDetector. This will be useful in the next lessons.
+Column(
+    children: coins
+        .map((coin) => GestureDetector(
+            onTap: () {}, child: CoinCard(coin: coin)))
+        .toList(),
+  ),
+Great, now if you save it and hot restart you should see that the coins appear in a nicer UI. Feel free to take a look at the CoinCard code to see how it was done (quite simple).
+
+Here is the code for the code_display.dart in case you need it:
+import 'package:flutter/material.dart';
+
+import '../model/coin.dart';
+import '../services/coin_repository.dart';
+import 'coin_card.dart';
+
+class CoinDisplay extends StatefulWidget {
+  const CoinDisplay({Key? key}) : super(key: key);
+
+  @override
+  State<CoinDisplay> createState() => _CoinDisplayState();
+}
+
+class _CoinDisplayState extends State<CoinDisplay> {
+  late Future<List<Coin>> _getCoins;
+
+  @override
+  void initState() {
+    _getCoins = CoinRepository.getCoins();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Coin>>(
+        future: _getCoins,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data != null) {
+            final coins = snapshot.data ?? [];
+            return Padding(
+              padding:
+                  const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 40),
+              child: Column(
+                children: coins
+                    .map((coin) => GestureDetector(
+                        onTap: () {}, child: CoinCard(coin: coin)))
+                    .toList(),
+              ),
+            );
+          }
+          return const Center(child: Text("Loading"));
+        });
+  }
+}
