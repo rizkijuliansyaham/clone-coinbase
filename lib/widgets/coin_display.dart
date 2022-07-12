@@ -1,3 +1,4 @@
+import 'package:belajar_clone_coinbase/pages/coin_page.dart';
 import 'package:belajar_clone_coinbase/widgets/coin_card.dart';
 import 'package:flutter/material.dart';
 import '../models/coin.dart';
@@ -34,7 +35,13 @@ class _CoinDisplayState extends State<CoinDisplay> {
               child: Column(
                 children: coins
                     .map((coin) => GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CoinPage(coin: coin)),
+                            );
+                          },
                           child: CoinCard(coin: coin),
                         ))
                     .toList(),

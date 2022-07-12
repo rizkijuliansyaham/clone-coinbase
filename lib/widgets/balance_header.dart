@@ -12,7 +12,7 @@ class BalanceHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Total balance",
+            "Total balance you have",
             style:
                 TextStyle(color: Colors.black.withOpacity(.55), fontSize: 15),
           ),

@@ -95,6 +95,7 @@ class IconBottomBar extends StatelessWidget {
   final IconData icon;
   final bool selected;
   final Function() onPressed;
+
   @override
   Widget build(BuildContext context) {
     return Column(
