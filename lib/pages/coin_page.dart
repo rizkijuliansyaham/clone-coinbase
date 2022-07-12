@@ -13,6 +13,14 @@ class CoinPage extends StatefulWidget {
 }
 
 class _CoinPageState extends State<CoinPage> {
+  late double _coinPrice;
+
+  @override
+  void initState() {
+    super.initState();
+    _coinPrice = widget.coin.price;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +43,24 @@ class _CoinPageState extends State<CoinPage> {
           child: Padding(
         padding: const EdgeInsets.all(15),
         child: ListView(
-          children: [],
+          children: [
+            Text(
+              "${widget.coin.fullName} price",
+              style: TextStyle(color: Colors.grey.shade700, fontSize: 14),
+            ),
+            Text(
+              "\$${_coinPrice.toStringAsFixed(2)}",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+
+            // Nanti grafik disini
+          ],
         ),
       )),
     );
