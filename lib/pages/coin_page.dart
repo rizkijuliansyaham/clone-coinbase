@@ -45,16 +45,28 @@ class _CoinPageState extends State<CoinPage> {
         padding: const EdgeInsets.all(15),
         child: ListView(
           children: [
-            Text(
-              "${widget.coin.fullName} price",
-              style: TextStyle(color: Colors.grey.shade700, fontSize: 14),
-            ),
-            Text(
-              "\$${_coinPrice.toStringAsFixed(2)}",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${widget.coin.fullName} price",
+                      style:
+                          TextStyle(color: Colors.grey.shade700, fontSize: 14),
+                    ),
+                    Text(
+                      "\$${_coinPrice.toStringAsFixed(2)}",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Image.network(widget.coin.imageUrl, width: 55),
+              ],
             ),
             const SizedBox(
               height: 50,
@@ -114,7 +126,11 @@ class _CoinPageState extends State<CoinPage> {
             //
 
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                //
+                //
+                //
+              },
               child: const Text(
                 "Trade",
                 style: TextStyle(color: Colors.white, fontSize: 18),
