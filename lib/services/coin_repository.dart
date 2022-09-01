@@ -16,7 +16,7 @@ class CoinRepository {
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
         final data = json['Data'] as List<dynamic>;
-        print(data);
+        // print(data);
         return data.map((e) {
           return Coin.fromMap(e);
         }).toList();

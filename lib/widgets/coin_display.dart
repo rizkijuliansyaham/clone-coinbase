@@ -16,6 +16,7 @@ class _CoinDisplayState extends State<CoinDisplay> {
   @override
   void initState() {
     _getCoins = CoinRepository().getCoins();
+    print(_getCoins);
     // _getCoins = CoinRepository().getCoins();
     super.initState();
   }
